@@ -3,7 +3,8 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
-<script> src="https://code.jquery.com/jquery-3.5.1.min.js"</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/config.js') }}"></script>
 
 <style>
 
@@ -97,8 +98,6 @@ span.psw {
 </body>
 
 <script>
-    //var socket = io("http://localhost:3000/");
-
     let myresult = null;
 
     function on_iframe(){
@@ -106,7 +105,7 @@ span.psw {
       myIframe.style.width="1500px";
       myIframe.style.height="1000px";
       console.log("in iframe")
-      let endpoint = "http://127.0.0.1:5000/home_page"
+      let endpoint = server_ip+"home_page"
       let adsURL = endpoint;
       console.log(adsURL);
       myIframe.src = adsURL;
@@ -126,7 +125,7 @@ span.psw {
         console.log(credentials);
         var send_data=JSON.stringify(credentials);
         
-        var end_point = "http://127.0.0.1:5000/validate_login";
+        var end_point = server_ip+"validate_login";
         
         const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
             console.log(credentials);
@@ -187,7 +186,7 @@ span.psw {
 
       var send_data=JSON.stringify(page_load_conf);
         
-      var end_point = "http://127.0.0.1:5000/get_data";
+      var end_point = server_ip+"get_data";
       
       const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
           console.log(api_body);

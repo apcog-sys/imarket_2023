@@ -11,6 +11,7 @@ from woocommerce import API
 import datetime 
 from datetime import date, timedelta
 import pymysql
+import requests
 
 wcapi = API(
     url='http://medicube.in',
@@ -20,6 +21,24 @@ wcapi = API(
     version= 'wc/v3',
     timeout=20
 )
+
+try:
+# Get the machine's IP address
+	print("grtting ip")
+	response = requests.get('https://api.ipify.org?format=json')
+	data = response.json()
+	public_ip = data['ip']
+	public_ip = "123"
+
+
+	print("Public IP Address:", public_ip)
+	#  Write the IP address to a JavaScript file
+	javascript_code = f'var server_ip = "http://{public_ip}:5000/";'
+
+	with open("static/config.js", "w") as js_file:
+	    js_file.write(javascript_code)
+except ConnectionError:
+	print("connect error to find public ip address.")
 
 
 # global variables

@@ -10,6 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/config.js') }}"></script>
   <style>
     
     .modal {
@@ -135,7 +136,7 @@
         var ul = document.getElementById("tab_list");
         var tab_pg_content = document.getElementById("tab_page_content");
         var send_data=JSON.stringify(page_load_conf);
-        var end_point = "http://127.0.0.1:5000/get_user_tabs";
+        var end_point = server_ip+"get_user_tabs";
         const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
           console.log(api_body);
           var response;
@@ -188,7 +189,7 @@
         page_load_conf.role=localStorage.getItem("u_role");
         if(tab_status[page_load_conf.tab]==0){
           var send_data=JSON.stringify(page_load_conf);
-          var end_point = "http://127.0.0.1:5000/get_data";
+          var end_point = server_ip+"get_data";
           const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
             console.log(api_body);
             var response;
@@ -221,7 +222,7 @@
         page_load_conf.role=localStorage.getItem("u_role");
         if(tab_status[page_load_conf.tab]==0){
           var send_data=JSON.stringify(page_load_conf);
-          var end_point = "http://127.0.0.1:5000/get_data";
+          var end_point = server_ip+"get_data";
           const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
             console.log(api_body);
             var response;
@@ -248,7 +249,7 @@
       }
 
       function account_update(){
-        var end_point = "http://127.0.0.1:5000/account_update";
+        var end_point = server_ip+"account_update";
           const getData = async(url=end_point,api_method="GET") => {     
             var response;
             response = await fetch(url,{
@@ -274,7 +275,7 @@
         page_load_conf.event="get_products_list";
         if(tab_status[page_load_conf.tab]==0){
           var send_data=JSON.stringify(page_load_conf);
-          var end_point = "http://127.0.0.1:5000/get_data";
+          var end_point = server_ip+"get_data";
           const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
             console.log(api_body);
             var response;
@@ -310,7 +311,7 @@
         page_load_conf.event="get_order_list";
         if(tab_status[page_load_conf.tab]==0 || control=="refresh_orders"){
           var send_data=JSON.stringify(page_load_conf);
-          var end_point = "http://127.0.0.1:5000/get_data";
+          var end_point = server_ip+"get_data";
           const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
             console.log(api_body);
             var response;
@@ -344,7 +345,7 @@
         console.log(">>>>>",  page_load_conf);
         if(tab_status[page_load_conf.tab]==0){
           var send_data=JSON.stringify(page_load_conf);
-          var end_point = "http://127.0.0.1:5000/get_data";
+          var end_point = server_ip+"get_data";
           const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
             console.log(api_body);
             var response;
@@ -383,7 +384,7 @@
         console.log(">>>>>",  page_load_conf);
         if(tab_status[page_load_conf.tab]==0){
           var send_data=JSON.stringify(page_load_conf);
-          var end_point = "http://127.0.0.1:5000/get_data";
+          var end_point = server_ip+"get_data";
           const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
             console.log(api_body);
             var response;
@@ -423,7 +424,7 @@
         console.log(">>>>>",  page_load_conf);
         if(tab_status[page_load_conf.tab]==0){
           var send_data=JSON.stringify(page_load_conf);
-          var end_point = "http://127.0.0.1:5000/get_data";
+          var end_point = server_ip+"get_data";
           const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
             console.log(api_body);
             var response;
@@ -672,7 +673,7 @@
           modal_body.event="get_referral_details"; }
         
         var send_data=JSON.stringify(modal_body);
-        var end_point = "http://127.0.0.1:5000/get_modal_data";
+        var end_point = server_ip+"get_modal_data";
         const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
           console.log(api_body);
           var response;
@@ -923,7 +924,7 @@
         referral_details.ref_to=send_msg
         console.log(referral_details)
         var send_data=JSON.stringify(referral_details);
-        var end_point = "http://127.0.0.1:5000/refer";
+        var end_point = server_ip+"refer";
         const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
           console.log(api_body);
           var response;
@@ -1003,7 +1004,7 @@
     
       console.log(cutm_data);
       var send_data=JSON.stringify(cutm_data);
-      var end_point = "http://127.0.0.1:5000/register";
+      var end_point = server_ip+"register";
       const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
         console.log(api_body);
         var response;
@@ -1120,7 +1121,7 @@
 
           console.log(cutm_data);
           var send_data=JSON.stringify(cutm_data);
-          var end_point = "http://127.0.0.1:5000/register";
+          var end_point = server_ip+"register";
           const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
             console.log(api_body);
             var response;
@@ -1166,7 +1167,7 @@
           }
           cutm_data.data=input_data;
           var send_data=JSON.stringify(cutm_data);
-          var end_point = "http://127.0.0.1:5000/register";
+          var end_point = server_ip+"register";
           const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
             console.log(api_body);
             var response;
@@ -1231,7 +1232,7 @@
           console.log("register_campaign_flag : ",register_campaign_flag)
           if (register_campaign_flag==1){
             var send_data=JSON.stringify(cutm_data);
-              var end_point = "http://127.0.0.1:5000/register";
+              var end_point = server_ip+"register";
               const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
                 console.log(api_body);
                 var response;
@@ -1269,7 +1270,7 @@
             else{
 
               var send_data=JSON.stringify(cutm_data);
-              var end_point = "http://127.0.0.1:5000/register";
+              var end_point = server_ip+"register";
               const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
                 console.log(api_body);
                 var response;
