@@ -24,7 +24,8 @@ wcapi = API(
 
 # global variables
 mydb = pymysql.connect(
-  host="localhost",
+  #host="localhost",
+  host="db",
   user="root",
   password="root"
 )
