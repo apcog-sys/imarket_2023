@@ -73,7 +73,7 @@ CREATE TABLE `campaign_product_info` (
   `term&conditions` varchar(45) DEFAULT NULL,
   `link` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,7 +109,7 @@ CREATE TABLE `campaign_referrals` (
   PRIMARY KEY (`referral_id`),
   UNIQUE KEY `referral_id_UNIQUE` (`referral_id`),
   UNIQUE KEY `seed_id_UNIQUE` (`seed_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=983417 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=983417 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -142,7 +142,7 @@ CREATE TABLE `commission_agreements` (
   `imarket_commission_rupees` varchar(45) DEFAULT NULL,
   `referral_commission_allocation_rupees` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`agreement_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,7 +179,7 @@ CREATE TABLE `customer_reg` (
   `country` varchar(45) DEFAULT NULL,
   `password` varchar(45) DEFAULT NULL,
   UNIQUE KEY `Serial_no_UNIQUE` (`Serial_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +206,7 @@ CREATE TABLE `event_config` (
   `config_JSON` json DEFAULT NULL,
   `process` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`event_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -231,7 +231,7 @@ CREATE TABLE `imarket_commisions` (
   `commission_details` varchar(45) DEFAULT NULL,
   `settlement_status` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +262,7 @@ CREATE TABLE `orders_list` (
   `wait_untill` date DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   UNIQUE KEY `order_id_UNIQUE` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,7 +291,7 @@ CREATE TABLE `product_list` (
   `product_link` varchar(100) DEFAULT NULL,
   `product_discription` varchar(500) DEFAULT NULL,
   UNIQUE KEY `product_id_UNIQUE` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -317,7 +317,7 @@ CREATE TABLE `referal_contacts` (
   `my_contact_person_name` varchar(45) DEFAULT NULL,
   `my_contact_person_phoneno` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`serial_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -349,7 +349,7 @@ CREATE TABLE `referral_commissions` (
   `referral_commissionscol` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   UNIQUE KEY `settlement_id_UNIQUE` (`transcation_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -376,7 +376,7 @@ CREATE TABLE `referral_settlements` (
   `history` json DEFAULT NULL,
   `points` int DEFAULT NULL,
   PRIMARY KEY (`settlement_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -407,7 +407,7 @@ CREATE TABLE `session` (
   `user_ip_address` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`session_id`),
   UNIQUE KEY `session_id_UNIQUE` (`session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -445,7 +445,7 @@ CREATE TABLE `staff_reg` (
   `country` varchar(45) DEFAULT NULL,
   `status` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -470,7 +470,7 @@ CREATE TABLE `staff_role_master` (
   `role_name` varchar(45) DEFAULT NULL,
   `description` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -502,7 +502,7 @@ CREATE TABLE `super_admin` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `serial_no_UNIQUE` (`serial_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -533,7 +533,7 @@ CREATE TABLE `tableops_log` (
   `from_ip_address` varchar(45) DEFAULT NULL,
   `action` varchar(8) DEFAULT NULL,
   PRIMARY KEY (`Transaction_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
