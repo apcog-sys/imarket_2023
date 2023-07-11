@@ -35,7 +35,7 @@ try:
 	#  Write the IP address to a JavaScript file
 	javascript_code = f'var server_ip = "http://{public_ip}:5000/";'
 
-	with open("static/config.js", "w") as js_file:
+	with open("static/js/config.js", "w") as js_file:
 	    js_file.write(javascript_code)
 except ConnectionError:
 	print("connect error to find public ip address.")
