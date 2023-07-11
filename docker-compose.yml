@@ -1,0 +1,18 @@
+version: '2'
+services:
+  flask:
+    build: .
+    image: msahique/imarket_2023_v1
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7
+    ports:
+      - "3300:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=medicube
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/:ro
