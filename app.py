@@ -28,7 +28,7 @@ try:
 	response = requests.get('https://api.ipify.org?format=json')
 	data = response.json()
 	public_ip = data['ip']
-	public_ip = "123"
+	
 
 
 	print("Public IP Address:", public_ip)
