@@ -1,0 +1,51 @@
+{
+    "event":"register_staff",
+    "target":"customer",
+    "handler":"register_new_staff",
+    "query_str":"SELECT * FROM medicube.staff_reg;",
+    "controls":[
+      {"type":"button","name":"new","function":"create_modal(3)","class":"glyphicon glyphicon-pencil"},
+      {"type":"button","name":"first","function":"first_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"prev","function":"previous_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"next","function":"next_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"last","function":"","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"print","function":"","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"refresh","function":"get_order_list('refresh_orders')","class":"btn btn-primary btn-xs my-xs-btn"}
+    ],
+    "page_attributes":{
+       "permissions_set1":{
+          "get":"id, first_name, last_name, entity_name, user_name, password, roles, email, phone, adress1, address2, city, state, postcode, country",
+          "show":[
+            "id", 
+            "first_name", 
+            "last_name", 
+            "entity_name", 
+            "user_name", 
+            "password", 
+            "roles", 
+            "email", 
+            "phone", 
+            "adress1", 
+            "address2", 
+            "city", 
+            "state", 
+            "postcode", 
+            "country"
+          ],
+          "create":true,
+          "view":true,
+          "edit":false,
+          "open":true,
+          "enable":true,
+          "print":true,
+          "roles":["Admin"]
+        },
+        "href":{
+            "host":"localhost",
+            "login_name":"root",
+            "password":"root"
+        }
+    }
+  }
+  
+  

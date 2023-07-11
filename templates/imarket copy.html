@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+  <style>
+    .modal {
+    display: none;
+    position: fixed; 
+    padding-top: 50px;
+    left: 0; 
+    overflow:scroll;
+    top: 0;
+    width: 100%;
+    height: 100%; 
+    background-color: rgb(252, 247, 247);
+    background-color: rgba(190, 188, 188, 0.5);
+  }
+  .modal-content {
+    position: relative; 
+    background-color: rgb(7, 8, 7);
+    padding: 20px; 
+    margin: auto; 
+    width: 75%;  
+    
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+  }
+  .close-btn {
+    float: right; 
+    color: lightgray; 
+    font-size: 24px;  
+    font-weight: bold;
+  }
+  .close-btn:hover {
+    color: darkgray;
+  }
+  @-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+  }
+  @keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+  }
+
+
+
+
+  #footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+  }
+
+  </style>
+    
+  </head>
+
+
+  <body>
+      <!-- Header and tittle div-->
+      <div id="title_header">
+        <h2 class="text-center">iMarket</h2>
+      </div>
+
+      <div id="main_page_tab_div" class="container " >
+        
+        <ul id="tab_list" class="nav nav-tabs ">
+          <!--
+          <li><a data-toggle="tab" onclick="get_user_list(0)" href="#Registration_form">Registration</a></li>
+          <li><a data-toggle="tab" onclick="get_product_list(0)"href="#Products">Products</a></li>
+          <li><a data-toggle="tab" href="#Orders">Orders</a></li>
+          <li><a data-toggle="tab" onclick="get_campaign_list()" href="#Campaign">Campaign</a></li>
+          -->
+        </ul>
+        <div id="tab_page_content"class="tab-content form-horizontal">
+          // open new tab (market place)
+          // pass the link
+
+        </div>
+        
+          <div class="modal" id="myModal">
+            <div class="modal-header">
+              <span class="close-btn">&times;</span>
+            </div>
+            <div id="modal_content" class="modal-content">  </div>
+            <div id="modal_footer" class="modal-footer">
+              
+          </div>
+          <div id='div_iframe'>
+            <iframe id="myIframe" style="display:block" frameborder="0" marginwidth="0" marginheight="0"  width="100%" height="50%" ></iframe>  
+          </div>
+      </div>
+      
+      <!-- footer  div -->
+      <div id="footer"> powered by apcog </div>
+    
+  </body>
+
+
+  <script>
+      var socket //= io("http://localhost:3000/");
+      var page_load_conf={
+          rows_PP:null,
+          sort_col:null,
+          page_count:0,
+          tab:"",
+          role:"",
+          event:"",
+          user_name:"",
+          sessionId:""
+      }
+      var tab_status={}
+
+      console.log(localStorage.getItem("session_id"));
+      load_tabs()
+      
+      var field_val=[];
+      var pub_user_id=0;
+
+      function load_tabs(){
+        var ul = document.getElementById("tab_list");
+        var tab_pg_content = document.getElementById("tab_page_content");
+        //ul.className='nav nav-tabs';
+        //document.body.appendChild(ul);
+        var tab_li={
+          "tab_list":[
+            {"Name":"Customer","function":"get_user_list(0)"},
+            {"Name":"Order","function":"get_order_list()"},
+            {"Name":"Campaign","function":"get_campaign_list()"},
+            {"Name":"Products","function":"get_product_list()"},
+            {"Name":"Advertisements","function":"get_ads_list()"}
+            {"Name":"Market Place","function":""}
+          ]
+        }
+
+        for (var i = 0; i < tab_li.tab_list.length; i++)
+        {
+            var li = document.createElement("li");  
+            var a = document.createElement("a");
+            
+            a.setAttribute('data-toggle','tab');
+            console.log(tab_li.tab_list[i].function)
+            a.setAttribute('onclick',tab_li.tab_list[i].function)
+            a.innerHTML = tab_li.tab_list[i].Name;
+            a.setAttribute('href',"#"+tab_li.tab_list[i].Name);
+
+            tab_href_div = document.createElement('div');
+            tab_href_div.setAttribute('id',tab_li.tab_list[i].Name);
+            tab_href_div.setAttribute('class',"tab-pane fade");
+            tab_href_div.innerHTML="this is tab page "+ tab_li.tab_list[i].Name;
+            
+            tab_pg_content.append(tab_href_div);
+            li.appendChild(a);
+            ul.appendChild(li);
+            //name=tab_li.tab_list[i].Name;
+            tab_status[tab_li.tab_list[i].Name] = 0;
+            //tab_status.push(tab_st_data)
+        }
+        console.log(tab_status);
+        //console.log(tab_status.Customer);
+      }
+
+      function get_campaign_list(){
+        page_load_conf.tab="Campaign";
+          page_load_conf.event="list_campaign";
+          page_load_conf.sessionId=localStorage.getItem("session_id");
+          page_load_conf.role="Admin";
+          if(tab_status[page_load_conf.tab]==0){
+          var send_data=JSON.stringify(page_load_conf);
+          var end_point = "http://127.0.0.1:5000/get_data";
+          const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
+            console.log(api_body);
+            var response;
+            response = await fetch(url,{
+                method: api_method,
+                body: api_body, // string or object
+                headers : { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                const raps = await response.json(); myresult = raps;
+            }
+            return (myresult);
+          }
+          getData().then(data => {
+            console.log(data)
+            init_tab_prepartion(data[0],data[1],data[2])   
+          });
+        }
+        console.log(tab_status); 
+          
+      }
+
+      function get_product_list(){
+        page_load_conf.tab="Products";
+        page_load_conf.event="get_products_list";
+        page_load_conf.sessionId=localStorage.getItem("session_id");
+        page_load_conf.role="Admin";
+        if(tab_status[page_load_conf.tab]==0){
+          var send_data=JSON.stringify(page_load_conf);
+          var end_point = "http://127.0.0.1:5000/get_data";
+          const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
+            console.log(api_body);
+            var response;
+            response = await fetch(url,{
+                method: api_method,
+                body: api_body, // string or object
+                headers : { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                const raps = await response.json(); myresult = raps;
+            }
+            return (myresult);
+          }
+          getData().then(data => {
+            console.log(data)
+            init_tab_prepartion(data[0],data[1],data[2])   
+          });
+        }
+        else if (tab_status[page_load_conf.tab]==1){  socket.emit('get_products_list',page_load_conf);  }
+        tab_status[page_load_conf.tab]=1;
+        console.log(tab_status); 
+        
+      }
+
+      function get_order_list(){
+        console.log("getting order");
+        page_load_conf.tab="Order";
+        page_load_conf.event="get_order_list";
+        page_load_conf.sessionId=localStorage.getItem("session_id");
+        page_load_conf.role="User";
+        if(tab_status[page_load_conf.tab]==0){
+          var send_data=JSON.stringify(page_load_conf);
+          var end_point = "http://127.0.0.1:5000/get_data";
+          const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
+            console.log(api_body);
+            var response;
+            response = await fetch(url,{
+                method: api_method,
+                body: api_body, // string or object
+                headers : { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                const raps = await response.json(); myresult = raps;
+            }
+            return (myresult);
+          }
+          getData().then(data => {
+            console.log(data)
+            init_tab_prepartion(data[0],data[1],data[2])   
+          });
+        }
+        tab_status[page_load_conf.tab]=1;
+        console.log(tab_status); 
+      }
+    
+      function get_user_list(conf){
+        // console.log(conf);
+        page_load_conf.tab="Customer";
+        page_load_conf.event="customer_list";
+        page_load_conf.sessionId=localStorage.getItem("session_id");
+        console.log(">>>>>",  page_load_conf);
+        if(tab_status[page_load_conf.tab]==0){
+          var send_data=JSON.stringify(page_load_conf);
+          var end_point = "http://127.0.0.1:5000/get_data";
+          const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
+            console.log(api_body);
+            var response;
+            response = await fetch(url,{
+                method: api_method,
+                body: api_body, // string or object
+                headers : { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                const raps = await response.json(); myresult = raps;
+            }
+            return (myresult);
+          }
+          getData().then(data => {
+            console.log(data)
+            init_tab_prepartion(data[0],data[1],data[2])   
+          });
+        }
+        tab_status[page_load_conf.tab]=1;
+        console.log(tab_status);     
+      }
+
+      function get_ads_list(){
+        console.log("here.....")
+        page_load_conf.tab="Advertisements";
+        page_load_conf.event="list_ads";
+        page_load_conf.sessionId=localStorage.getItem("session_id");
+        //page_load_conf.role="Admin";
+        /*if(tab_status[page_load_conf.tab]==0){
+          socket.emit('list_ads',page_load_conf);
+          tab_status[page_load_conf.tab]=1;
+        }
+        console.log(tab_status);*/
+        console.log(">>>>>",  page_load_conf);
+        if(tab_status[page_load_conf.tab]==0){
+          var send_data=JSON.stringify(page_load_conf);
+          var end_point = "http://127.0.0.1:5000/get_data";
+          const getData = async(url=end_point,api_method="POST",api_body=send_data) => {     
+            console.log(api_body);
+            var response;
+            response = await fetch(url,{
+                method: api_method,
+                body: api_body, // string or object
+                headers : { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                const raps = await response.json(); myresult = raps;
+            }
+            return (myresult);
+          }
+          getData().then(data => {
+            console.log(data)
+            init_tab_prepartion(data[0],data[1],data[2])   
+          });
+        }
+        tab_status[page_load_conf.tab]=1;
+        console.log(tab_status);     
+      }
+
+          
+      //}
+      
+      //socket.on('customer_list_response', (result,per_config,controls,tab) => {
+      function init_tab_prepartion(result,per_config,controls){    
+        console.log(result,per_config);
+          console.log(">>>>>",controls)
+        // console.log(result,per_config.create);
+          var count=2;
+          var reg_view_col_names=[""];
+          for ( var property in result[0] ) { 
+            if( per_config['show'].includes(property) ){reg_view_col_names.push(property);}
+          }
+          console.log(reg_view_col_names)
+          var n_col=per_config['show'].length;
+          try {
+              var table = document.getElementById("user_list");
+              for(var i = table.rows.length - 1; i > 0; i--){ table.deleteRow(i); }
+              table.deleteTHead();
+              var th=table.tHead.remove();
+          } catch (error) {
+            //console.log(error);
+          }
+
+          createTable(reg_view_col_names,result,per_config,page_load_conf.tab,controls);
+        }
+      //});
+
+
+      function createTable(headerList, dataList,permission_config,tab_name,pg_controls) {
+          console.log(headerList, dataList,permission_config,tab_name,pg_controls);
+          //var main= document.getElementById('main_page_tab_div')
+          // populating content in specific tabs
+          var main= document.getElementById(tab_name)
+          main.setAttribute('tab','show');
+          main.innerHTML="";
+          var div_1= document.createElement('div');
+          div_1.setAttribute('id','div1')
+
+          for(var y=0;y<pg_controls.length;y++){
+              var btn=document.createElement(pg_controls[y].type);
+              btn.setAttribute('id','btn_'+pg_controls[y].name)
+              btn.setAttribute('onclick',pg_controls[y].function)
+              btn.setAttribute('class',pg_controls[y].class)
+              btn.innerHTML=pg_controls[y].name;
+              div_1.appendChild(btn);
+              console.log('created')
+          }
+          main.appendChild(div_1);
+
+
+          var reg_controll_div_status=0
+          var bt_div=''; var table_div='';
+          if (page_load_conf.tab == "registration"){ bt_div='reg_pg_controll_sort';  table_div='user_list';}
+          if (page_load_conf.tab == "campaign"){ bt_div='reg_pg_controll_sort';  table_div='campaign_list';}
+          
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Code for Creating elements to take input of no of rows to be displayed in a page.
+          if(reg_controll_div_status==0){
+              var sel = document.createElement('select')
+            for (const val of headerList)
+            { 
+              if(val != ""){
+                  
+                var sort_option = document.createElement("option");
+                sort_option.value = val;
+                sort_option.text = val.charAt(0).toUpperCase() + val.slice(1);
+                sel.appendChild(sort_option);     
+              } 
+            }  
+            main.appendChild(sel);         
+            
+          // console.log(reg_controll_div_status," inside the loop");
+            var sort_label = document.createElement("label");
+            sort_label.innerHTML = "Sort"
+            sort_label.htmlFor = "sort_by";
+            
+            //main.appendChild(sort_label).appendChild(sort_select)
+            reg_controll_div_status=1;
+
+          }
+          //console.log(reg_controll_div_status);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /*    Table creation header and data    */
+      
+        var table = document.createElement('table');
+        table.setAttribute( "class","table table-bordered")
+      // var tr = document.createElement('tr'); 
+        MyHeader = table.createTHead();
+        var MyRow = MyHeader.insertRow(0);
+        var colno=-1;
+        for (var j=-1;j<headerList.length;j++){
+          if (j==-1){var MyCell = MyRow.insertCell(colno);colno++;}
+          else{
+            //var show_status= permission_config.show.includes(headerList[j]);
+            //console.log(permission_config.show,headerList[j],show_status);
+            //if (show_status==true){
+              var MyCell = MyRow.insertCell(colno);
+              colno++;
+              MyCell.innerHTML ="<strong  onclick='sortTable("+j+")'>"+headerList[j]+"</strong>"
+            //}
+          }
+        }
+
+        //  create data  rows in table ....
+        if(permission_config.open==true){
+          for (var i = 0; i < dataList.length; i++) {
+              var tr = document.createElement('tr'); // row
+              for (var j = 0; j < headerList.length; j++) {
+                  var td = document.createElement('td'); //column           
+                  //if(headerList[j] == "user_id" || headerList[j] == "status"){
+                  if(headerList[j] == "" ){
+                    //console.log("am user id");
+                    var text = document.createTextNode(""); //cell
+                    if(headerList[j] == ""){
+                      var button = document.createElement('button'+i);
+                      var span = document.createElement('span'+i);
+                    }
+                    else{
+                      var button = document.createElement('button_'+dataList[i].user_id);
+                      var span = document.createElement('span_'+dataList[i].user_id);
+                    }
+                    button.setAttribute('class', 'btn btn-primary btn-xs my-xs-btn');
+                    button.setAttribute('type', 'button');
+                    button.setAttribute('style','margin-right:16px');
+                    button.setAttribute('onclick',"");
+                    if(permission_config.edit==false){button.setAttribute('disabled','true');}
+                    else{
+                      if(headerList[j] == ""){
+                        span.setAttribute('class', 'glyphicon glyphicon-pencil');
+                        span.setAttribute('onClick', 'create_modal('+dataList[i][headerList[j+1]]+')');
+                        //span.innerHTML = ' '+dataList[i][headerList[j]];
+                      }
+                      else{ 
+                        span.setAttribute('class', 'glyphicon glyphicon-ok');
+                        span.setAttribute('onClick', 'change_user_status('+dataList[i][headerList[j]]+')');
+                        span.innerHTML = ' '+dataList[i][headerList[j]];
+                      }
+                    }
+                      
+                    button.appendChild(span);
+                    td.appendChild(button);
+                    tr.appendChild(td);
+                    //if(permission_config.edit==false){td.style.visibility = 'hidden';}
+                    //tr.appendChild(td);
+                      
+                    // btn_count++;
+                    
+                  } 
+                  else{
+                    if(page_load_conf.tab=="Advertisements"){
+                      if(headerList[j]=="product_link"){
+                        var link_button = document.createElement('button'+j);
+                        var link_span = document.createElement('span'+j);
+
+                        link_button.setAttribute('class', 'btn btn-primary btn-xs my-xs-btn');
+                        link_button.setAttribute('type', 'button');
+                        link_button.setAttribute('style','margin-right:16px');
+                        link_button.setAttribute('onclick','product_details_iframe('+dataList[i][headerList[j]]+')');
+                        link_button.innerHTML="click for details"
+                        //button.appendChild(span);
+                        td.appendChild(link_button);
+                        tr.appendChild(td);
+                      }
+                    } 
+                    if (headerList[j] != "user_id" || headerList[j] != "product_link" ){
+                      console.log("88888888888888888888888888888888888888888888")
+                      var text = document.createTextNode(dataList[i][headerList[j]]); //cell
+                      td.appendChild(text);
+                      tr.appendChild(td);
+                    }
+                  }
+              }
+              table.appendChild(tr);
+          }
+          main.appendChild(table);
+        }
+      }
+
+      function product_details_iframe(link){
+        console.log(link)
+        window.open(link, "_blank");
+        
+
+
+        /*let myIframe = document.getElementById("myIframe");
+        myIframe.style.width="100px";
+        myIframe.style.height="50px";
+        
+        let endpoint = link;
+        console.log(endpoint)
+        let adsURL = endpoint;
+        console.log(adsURL);
+        myIframe.src = adsURL;*/
+      }
+
+      function previous_page(){
+        if(page_load_conf.page_count == 0){socket.emit('customer_list',page_load_conf);}
+        else{var cnt=parseInt(page_load_conf.page_count); cnt=cnt-1;page_load_conf.page_count=cnt;console.log(page_load_conf.page_count); socket.emit('customer_list',page_load_conf);}
+      }
+      
+      function next_page(){
+      // console.log(typeof (page_load_conf.page_count));
+        //(page_load_conf.page_count == 0){socket.emit('customer_list',page_load_conf);}
+        //else{
+          var cnt=parseInt(page_load_conf.page_count); cnt=cnt+1;page_load_conf.page_count=cnt;
+        //  console.log(page_load_conf.page_count);
+          socket.emit('customer_list',page_load_conf);
+        //}
+      }
+      
+      function first_page(){  page_load_conf.page_count=0; socket.emit('customer_list',page_load_conf);}
+
+      function create_modal(edit_user_id){
+          //$('#myModal').modal('show');
+        //console.log("edit_user_id:" +edit_user_id);
+        pub_user_id=edit_user_id;
+        
+        page_load_conf.role="Admin";
+        // console.log( page_load_conf)
+        if(page_load_conf.tab=="Customer"){
+          page_load_conf.event="get_user_details"; 
+        if(edit_user_id != 0){socket.emit('get_user_details',edit_user_id,page_load_conf);}
+        else{socket.emit('get_user_details',edit_user_id,page_load_conf);}
+        }
+
+        else if(page_load_conf.tab=="Order"){
+        if(edit_user_id != 0){socket.emit('get_user_details',edit_user_id,page_load_conf);}
+        else{socket.emit('get_user_details',edit_user_id,page_load_conf);}
+        }
+
+        else if(page_load_conf.tab=="Campaign"){
+          console.log("Campaign",edit_user_id);
+          page_load_conf.event="get_campaign_details";
+        if(edit_user_id != 0){socket.emit('get_campaign_details',edit_user_id,page_load_conf);}
+        else{socket.emit('get_campaign_details',edit_user_id,page_load_conf);}
+        }
+
+        else if(page_load_conf.tab=="Products"){
+          console.log("Products",edit_user_id);
+          page_load_conf.event="get_product_details";
+        if(edit_user_id != 0){socket.emit('get_product_details',edit_user_id,page_load_conf);}
+        else{socket.emit('get_product_details',edit_user_id,page_load_conf);}
+        }
+
+        else{console("nothing sent")}
+        
+      }
+
+      socket.on('get_user_details_response',(result,fields,id_no,helper_data) =>{
+          console.log(result[0]);  
+          console.log(helper_data)
+        // console.log(fields);
+        // console.log(id_no);
+          //console.log(fields[0][0].first_name);
+          field_val=[]
+          for (var z=0;z<fields[0].length;z++){
+            //console.log(fields[0][z]);
+            var keys2=Object.keys(fields[0][z]);
+            field_val.push(keys2[0])  
+          }
+          console.log(field_val);
+
+          let modalBtn = document.getElementById("modal-btn")
+          let modal = document.querySelector(".modal")
+          let closeBtn = document.querySelector(".close-btn")
+          //modalBtn.onclick = function(){
+            var main= document.getElementById('modal_content')
+            var modaldiv=document.createElement('div');
+            modaldiv.setAttribute('class','modal-body');
+            try {
+              main.innerHTML="";
+            } catch (error) {
+              
+            }
+            for(var x=0;x<field_val.length;x++){
+              console.log(field_val[x])
+              if(fields[0][x][field_val[x]]['show']==true ){
+                
+                //console.log(fields[0][x][field_val[x]]['show'])
+              
+                  var d=document.createElement('div');
+                  d.setAttribute('class','mb-3 mt-3');
+                  
+                  var label=document.createElement('lable');
+                  label.setAttribute('class','form-label')
+                  label.style.color='white';
+
+                  label.innerHTML=field_val[x]+':'
+                  d.appendChild(label);
+
+                  var u_input=document.createElement('input');
+                  u_input.setAttribute("id",field_val[x]);
+                  u_input.required;
+                  //u_input.setAttribute("type","text");
+                  u_input.setAttribute("type",fields[0][x][field_val[x]]['datatype']);
+                  u_input.setAttribute('class','form-control');
+                  
+                  if(fields[0][x][field_val[x]]['edit']==false ){u_input.setAttribute('readOnly','true');}
+                  if(fields[0][x][field_val[x]]['create']==true ){u_input.setAttribute('value',"");}
+                  else{
+                    if(result[0][field_val[x]]==null){u_input.setAttribute('value',"");}
+                    else{
+                      console.log(field_val[x],result[0][field_val[x]]);
+                      if(id_no != "0"){u_input.setAttribute('value',result[0][field_val[x]]);}
+                      else{u_input.setAttribute('value',"");}
+                    }
+                  }
+                  var next_line=document.createElement('br');
+                  
+                  d.appendChild(u_input);
+                  modaldiv.appendChild(d);modaldiv.appendChild(next_line);
+              }
+              
+    
+            }
+            // adding status 
+            if(result[0]['status']!=""){
+              var status_div=document.createElement('div');
+              var st_label=document.createElement('lable');
+              st_label.setAttribute('class','form-label')
+              st_label.innerHTML="Status:"
+              st_label.style.color='white';
+              status_div.appendChild(st_label);
+
+              var st_select=document.createElement('select');
+              st_select.setAttribute('id','user_status')
+              var options=['enable','disable']
+              for(var x=0;x<options.length;x++){
+                var st_option=document.createElement('option');
+                st_option.innerHTML=options[x];
+                st_select.appendChild(st_option)
+                status_div.appendChild(st_select)
+              }
+            }
+            modaldiv.appendChild(status_div)
+            var button=['Save']
+            for(var x=0;x<button.length;x++){
+              footer_div= document.createElement('div')
+              btn=document.createElement('button');
+              btn.setAttribute('class','btn btn-success');
+              btn.setAttribute('style',"float: left;");
+              btn.setAttribute("id",button[x]);
+              
+              btn.setAttribute("onclick","get_input()");
+              btn.innerHTML=button[x];
+              footer_div.appendChild(btn)
+            }
+            
+            modaldiv.appendChild(footer_div)
+            main.appendChild(modaldiv);
+            modal.style.display = "block"
+          //}
+          closeBtn.onclick = function(){
+            modal.style.display = "none"
+          }
+          window.onclick = function(e){
+            if(e.target == modal){
+              modal.style.display = "none"
+            }
+          }
+
+          //create_form(result);
+      });
+
+    function get_input(){
+      console.log(field_val);
+      input_data=[];
+      for (var z=0;z<field_val.length;z++){
+            console.log(field_val[z]);
+        if(field_val[z] != 'user_name'){ 
+          const inpObj = document.getElementById(field_val[z]);
+          console.log(field_val[z],":::",inpObj.value);
+          if(inpObj.value != ""){
+            if (!inpObj.checkValidity()) {
+              alert(inpObj.validationMessage); break;
+              //console.log(inpObj.validationMessage);
+            } else {
+              console.log("Input OK");input_data.push(inpObj.value)
+              //document.getElementById("demo").innerHTML = "Input OK";
+            }
+            
+          }
+          else{alert("please enter data in all the fields"); break;} 
+          
+        }
+      }
+        input_data.push(document.getElementById('user_status').value)
+        //console.log(input_data);
+
+        //console.log (f_name, l_name,email,phone,status, address1,address2,city,state,postcode,country,u_status);
+        if (page_load_conf.tab=="Customer"){
+          console.log("The opened tab is : ",page_load_conf.tab);
+          console.log("collected data: ",input_data);
+          if(pub_user_id==0){action='register';}
+          else{action='edit'}
+
+          cutm_data = [{api:action},{
+              email: input_data[2],
+              first_name: input_data[0],
+              last_name: input_data[1],
+              username: 'imarket_'+input_data[0]+'_'+input_data[1],
+              billing: {
+                  first_name: input_data[0],
+                  last_name: input_data[1],
+                  company: "",
+                  address_1: input_data[5],
+                  address_2: input_data[6],
+                  city: input_data[7],
+                  state: input_data[8],
+                  postcode: input_data[9],
+                  country: input_data[10],
+                  email: input_data[2],
+                  phone: input_data[3]
+              },
+              shipping: {
+                  first_name: input_data[0],
+                  last_name: input_data[1],
+                  company: "",
+                  address_1: input_data[5],
+                  address_2: input_data[6],
+                  city: input_data[7],
+                  state: input_data[8],
+                  postcode:input_data[9],
+                  country: input_data[10]
+              }
+          },
+          {status:input_data[12]},
+          {userID:pub_user_id}
+        ];
+
+          console.log(cutm_data);
+          socket.emit('customer_register_edit',cutm_data);
+        }
+
+        if (page_load_conf.tab=="Order"){
+          
+          console.log("The opened tab is : ",page_load_conf.tab);console.log("collected data: ",input_data);
+          
+        }
+
+        if (page_load_conf.tab=="Campaign"){
+          console.log("The opened tab is : ",page_load_conf.tab);console.log("collected data: ",input_data);
+          socket.emit('create_campaign',input_data);
+          //create_campaign
+        }
+
+        if (page_load_conf.tab=="Products"){
+          console.log("The opened tab is : ",page_load_conf.tab);console.log("collected data: ",input_data);
+        }
+
+        if (page_load_conf.tab=="Advertisement"){
+          console.log("The opened tab is : ",page_load_conf.tab);console.log("collected data: ",input_data);
+        }
+        
+    }
+
+    socket.on('common_response', (data) => {
+      console.log(data); alert(data);
+      if (page_load_conf.tab=="Customer"){get_user_list(0);}
+
+        if (page_load_conf.tab=="Order"){get_order_list();}
+
+        if (page_load_conf.tab=="Campaign"){get_campaign_list();}
+
+        if (page_load_conf.tab=="Products"){get_product_list();}
+
+        if (page_load_conf.tab=="Advertisement"){get_advertisement_list();}
+
+      //refresh_table();
+    });
+
+  </script>
+  </html>

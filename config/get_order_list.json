@@ -1,0 +1,62 @@
+{
+    "event":"get_order_list",
+    "target":"customer",
+    "handler":"get_order_list",
+    "query_str":"SELECT * FROM medicube.orders_list;",
+    "query_str2":"SELECT * FROM medicube.orders_list WHERE customer_id = %s;",
+    "controls":[
+      {"type":"button","name":"first","function":"first_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"prev","function":"previous_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"next","function":"next_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"last","function":"","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"print","function":"","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"refresh","function":"get_order_list('refresh_orders')","class":"btn btn-primary btn-xs my-xs-btn"}
+    ],
+    "page_attributes":{
+       "permissions_set1":{
+          "get":"customer_id, order_id, order_value, product_id,  order_date_time, coupon_code",
+          "show":[
+            "customer_id",
+            "order_id",
+            "order_value",
+            "product_id", 
+            "order_date_time",
+            "coupon_code"
+          ],
+          "create":true,
+          "view":true,
+          "edit":false,
+          "open":true,
+          "enable":true,
+          "print":true,
+          "roles":[
+             "Admin"
+          ]
+       },
+       "permissions_set2":{
+         "get":"customer_id, order_id, order_value, product_id,  order_date_time, coupon_code",
+         "show":[
+            "customer_id",
+            "order_id",
+            "order_value",
+            "product_id", 
+            "order_date_time",
+            "coupon_code"
+         ],
+         "create":true,
+         "view":true,
+         "edit":false,
+         "open":true,
+         "enable":true,
+         "print":true,
+         "roles":[
+            "User"
+         ]
+      },
+       "href":{
+          "host":"localhost",
+          "login_name":"root",
+          "password":"root"
+       }
+    }
+ }

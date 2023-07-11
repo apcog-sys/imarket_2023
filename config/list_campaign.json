@@ -1,0 +1,45 @@
+{
+   "event":"list_campaign",
+   "target":"customer",
+   "handler":"list_campaign",
+   "query_str":"SELECT * FROM medicube.campaign_list;",
+   "controls":[
+     {"type":"button","name":"new","function":"create_modal(0)","class":"glyphicon glyphicon-pencil"},
+     {"type":"button","name":"first","function":"first_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+     {"type":"button","name":"prev","function":"previous_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+     {"type":"button","name":"next","function":"next_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+     {"type":"button","name":"last","function":"","class":"btn btn-primary btn-xs my-xs-btn"},
+     {"type":"button","name":"print","function":"","class":"btn btn-primary btn-xs my-xs-btn"}
+   ],
+   "page_attributes":{
+      "permissions_set1":{
+         "get":"id, name, start_date, stop_date, max_referral_level, no_of_seeds, product_list,coupon_use_limit,discount,minimum_value",
+         "show":[
+           "id",
+           "name",
+            "start_date",
+            "stop_date",
+            "max_referral_level",
+            "no_of_seeds",
+            "product_list",
+            "coupon_use_limit",
+            "discount",
+            "minimum_value"
+         ],
+         "create":true,
+         "view":true,
+         "edit":true,
+         "open":true,
+         "enable":true,
+         "print":true,
+         "roles":[
+            "Admin"
+         ]
+      },
+      "href":{
+         "host":"localhost",
+         "login_name":"root",
+         "password":"root"
+      }
+   }
+}

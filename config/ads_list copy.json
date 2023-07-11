@@ -1,0 +1,64 @@
+{
+   "event":"list_ads",
+   "target":"customer",
+   "handler":"list_ads",
+   "query_str":"SELECT * FROM medicube.campaign_referrals;",
+   "controls":[
+     {"type":"button","name":"first","function":"first_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+     {"type":"button","name":"prev","function":"previous_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+     {"type":"button","name":"next","function":"next_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+     {"type":"button","name":"last","function":"","class":"btn btn-primary btn-xs my-xs-btn"},
+     {"type":"button","name":"print","function":"","class":"btn btn-primary btn-xs my-xs-btn"}
+   ],
+   "page_attributes":{
+      "permissions_set1":{
+         "get":"campaign_id, referral_level, refered_by, refered_to, status, referral_id, coupon_code, order_id, down_counter",
+         "show":[
+           "campaign_id", 
+           "referral_level", 
+           "refered_by", 
+           "refered_to", 
+           "status", 
+           "referral_id", 
+           "coupon_code", 
+           "order_id"
+         ],
+         "create":true,
+         "view":true,
+         "edit":false,
+         "open":true,
+         "enable":true,
+         "print":true,
+         "roles":[
+            "Admin"
+         ]
+      },
+      "permissions_set2":{
+        "get":"campaign_id, referral_level, refered_by, refered_to, status, referral_id, coupon_code, order_id, down_counter",
+        "show":[
+          "campaign_id", 
+          "referral_level", 
+          "refered_by", 
+          "refered_to", 
+          "status", 
+          "referral_id", 
+          "coupon_code", 
+          "order_id"
+        ],
+        "create":true,
+        "view":true,
+        "edit":false,
+        "open":true,
+        "enable":true,
+        "print":true,
+        "roles":[
+           "User"
+        ]
+     },
+      "href":{
+         "host":"localhost",
+         "login_name":"root",
+         "password":"root"
+      }
+   }
+}

@@ -1,0 +1,66 @@
+{
+    "event":"get_settlements",
+    "target":"customer",
+    "handler":"get_settlements",
+    "query_str":"SELECT * FROM medicube.referral_settlements;",
+    "query_str2":"SELECT * FROM medicube.referral_settlements WHERE customer_id = %s;",
+    "controls":[
+      {"type":"button","name":"first","function":"first_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"prev","function":"previous_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"next","function":"next_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"last","function":"","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"print","function":"","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"refresh","function":"get_order_list('refresh_orders')","class":"btn btn-primary btn-xs my-xs-btn"}
+    ],
+    "page_attributes":{
+       "permissions_set1":{
+          "get":"settlement_id, customer_id, order_reference, amount_reference, amount, status, settlements_transaction_ids",
+          "show":[
+            "settlement_id", 
+            "customer_id", 
+            "order_reference", 
+            "amount_reference", 
+            "amount", 
+            "status", 
+            "settlements",
+            "transaction_ids"
+          ],
+          "create":true,
+          "view":true,
+          "edit":false,
+          "open":true,
+          "enable":true,
+          "print":true,
+          "roles":[
+             "Admin"
+          ]
+       },
+       "permissions_set2":{
+         "get":"settlement_id, customer_id, order_reference, amount_reference, amount, status, settlements_transaction_ids",
+          "show":[
+            "settlement_id", 
+            "customer_id", 
+            "order_reference", 
+            "amount_reference", 
+            "amount", 
+            "status", 
+            "settlements",
+            "transaction_ids"
+          ],
+         "create":true,
+         "view":true,
+         "edit":false,
+         "open":true,
+         "enable":true,
+         "print":true,
+         "roles":[
+            "User"
+         ]
+      },
+       "href":{
+          "host":"localhost",
+          "login_name":"root",
+          "password":"root"
+       }
+    }
+ }
