@@ -46,7 +46,8 @@ mydb = pymysql.connect(
   #host="localhost",
   host="db",
   user="root",
-  password="root"
+  password="root",
+  database="medicube"
 )
 try:
     mycursor = mydb.cursor()
@@ -81,9 +82,9 @@ def login():
     print(j_req_data['username'],j_req_data['password'],j_req_data['role'])    # the result is a Python dictionary:
 
     if (j_req_data['role']=="Admin"):
-        sql = "SELECT * FROM medicube.super_admin WHERE phone= %s  AND password= %s ;"
+        sql = "SELECT * FROM super_admin WHERE phone= %s  AND password= %s ;"
     elif(j_req_data['role']=="User"):
-        sql = "SELECT * FROM medicube.customer_reg WHERE phone= %s AND password= %s ;"
+        sql = "SELECT * FROM customer_reg WHERE phone= %s AND password= %s ;"
 
     elif(j_req_data['role']=="Finance_admin"):
         sql = "SELECT * FROM medicube.customer_reg WHERE phone= %s AND password= %s ;"
