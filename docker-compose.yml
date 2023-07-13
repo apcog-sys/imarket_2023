@@ -12,7 +12,7 @@ services:
     ports:
       - "3300:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=apcog
       - MYSQL_DATABASE=medicube
     volumes:
       - ./db:/docker-entrypoint-initdb.d/:ro
