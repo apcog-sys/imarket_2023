@@ -1,0 +1,59 @@
+{
+   "event":"list_ads",
+   "target":"customer",
+   "handler":"list_ads",
+   "query_str":"SELECT * FROM medicube.campaign_list;",
+   "query_str2":"SELECT campaign_id FROM medicube.campaign_referrals WHERE refered_to IN %s;",
+   "controls":[
+     {"type":"button","name":"first","function":"first_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+     {"type":"button","name":"prev","function":"previous_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+     {"type":"button","name":"next","function":"next_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+     {"type":"button","name":"last","function":"","class":"btn btn-primary btn-xs my-xs-btn"},
+     {"type":"button","name":"print","function":"","class":"btn btn-primary btn-xs my-xs-btn"}
+     
+   ],
+   "page_attributes":{
+      "permissions_set1":{
+         "get":"campaign_name, start_date, stop_date, product_name, product_link, product_discription",
+         "show":[
+           "campaign_name", 
+           "product_name", 
+           "product_link", 
+           "product_discription"
+         ],
+         "create":true,
+         "view":true,
+         "edit":true,
+         "open":true,
+         "enable":true,
+         "print":true,
+         "roles":[
+            "Admin"
+         ]
+      },
+      "permissions_set2":{
+        "get":"campaign_name, start_date, stop_date, product_name, product_link, product_discription",
+         "show":[
+           "campaign_name", 
+           "product_name", 
+           "product_link", 
+           "product_discription"
+         ],
+         "create":true,
+         "view":true,
+         "edit":true,
+         "open":true,
+         "enable":true,
+         "print":true,
+        "roles":[
+           "User"
+        ]
+     },
+      "href":{
+         "host":"localhost",
+         "login_name":"root",
+         "password":"root"
+      }
+   }
+}
+

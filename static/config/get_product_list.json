@@ -1,0 +1,63 @@
+{
+    "event":"get_products_list",
+    "target":"customer",
+    "handler":"product_list",
+    "query_str":"SELECT * FROM medicube.product_list;",
+    "controls":[
+      {"type":"button","name":"new","function":"create_modal(0)","class":"glyphicon glyphicon-pencil"},
+      {"type":"button","name":"first","function":"first_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"prev","function":"previous_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"next","function":"next_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"last","function":"","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"print","function":"","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"refresh","function":"get_product_list()","class":"btn btn-primary btn-xs my-xs-btn"}
+    ],
+    "page_attributes":{
+       "permissions_set1":{
+          "get":"product_id, product_name, product_price, product_commission, terms&conditions, product_link, product_discription",
+          "show":[
+            "product_id",
+             "product_name",
+             "product_price",
+             "product_commission",
+             "terms&conditions",
+             "product_link",
+             "product_discription"
+          ],
+          "create":false,
+          "view":true,
+          "edit":false,
+          "open":true,
+          "enable":true,
+          "print":true,
+          "roles":[
+             "Admin"
+          ]
+       },
+       "permissions_set2":{
+        "get":"product_id, product_name, product_price, terms&conditions, product_link, product_discription",
+        "show":[
+          "product_id",
+           "product_name",
+           "product_price",
+           "terms&conditions",
+           "product_link",
+           "product_discription"
+        ],
+        "create":false,
+        "view":true,
+        "edit":false,
+        "open":true,
+        "enable":true,
+        "print":true,
+        "roles":[
+           "User"
+        ]
+     },
+       "href":{
+          "host":"localhost",
+          "login_name":"root",
+          "password":"root"
+       }
+    }
+ }

@@ -1,0 +1,61 @@
+{
+    "event":"customer_list",
+    "target":"customer",
+    "handler":"registration",
+    "query_str":"SELECT * FROM medicube.customer_reg ;",
+    "controls":[
+      {"type":"button","name":"new","function":"create_modal(0)","class":"glyphicon glyphicon-pencil"},
+      {"type":"button","name":"first","function":"first_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"prev","function":"previous_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"next","function":"next_page()","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"last","function":"","class":"btn btn-primary btn-xs my-xs-btn"},
+      {"type":"button","name":"print","function":"","class":"btn btn-primary btn-xs my-xs-btn"}
+    ],
+    "page_attributes":{
+       "permissions_set1":{
+          "get":"user_id, first_name, last_name, user_name, email, phone, status",
+          "show":[ 
+             "first_name",
+             "last_name",
+             "user_name",
+             "email",
+             "phone",
+             "status"
+          ],
+          "create":true,
+          "view":true,
+          "edit":true,
+          "open":true,
+          "enable":true,
+          "print":true,
+          "roles":[
+             "Admin"
+          ]
+       },
+       "permissions_set2":{
+          "get":"user_id, first_name, last_name, user_name, email, phone, status",
+          "show":[
+             "first_name",
+             "last_name",
+             "user_name",
+             "email",
+             "phone",
+             "status"
+          ],
+          "create":false,
+          "view":true,
+          "edit":false,
+          "open":true,
+          "enable":false,
+          "print":true,
+          "roles":[
+             "User"
+          ]
+       },
+       "href":{
+          "host":"localhost",
+          "login_name":"root",
+          "password":"root"
+       }
+    }
+ }

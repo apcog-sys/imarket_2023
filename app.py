@@ -24,27 +24,25 @@ wcapi = API(
 
 try:
 # Get the machine's IP address
-	print("grtting ip")
-	response = requests.get('https://api.ipify.org?format=json')
-	data = response.json()
-	public_ip = data['ip']
-	
-
-
-	print("Public IP Address:", public_ip)
+	#print("grtting ip")
+	#response = requests.get('https://api.ipify.org?format=json')
+	#data = response.json()
+	#public_ip = data['ip']
+    public_ip = "123"
+    print("Public IP Address:", public_ip)
 	#  Write the IP address to a JavaScript file
-	javascript_code = f'var server_ip = "http://{public_ip}:5000/";'
+	#javascript_code = f'var server_ip = "http://{public_ip}:5000/";'
 
-	with open("static/js/config.js", "w") as js_file:
-	    js_file.write(javascript_code)
+	#with open("static/js/config.js", "w") as js_file:
+	    #js_file.write(javascript_code)
 except ConnectionError:
 	print("connect error to find public ip address.")
 
 
 # global variables
 mydb = pymysql.connect(
-  #host="localhost",
-  host="db",
+  host="localhost",
+  #host="db",
   user="root",
   password="root",
   database="medicube"
@@ -134,13 +132,13 @@ def get_data():
     print(myres)
     role=myres[0][3]
     if(y['event']=="customer_list"):
-        f=open('config/customer_list.json')
+        f=open('static/config/customer_list.json')
         json_data = json.load(f)
         #print(json_data)
     
     if(y['event']=="get_user_details"):
         arg_var_status=True
-        f=open('config/get_user_details.json')
+        f=open('static/config/get_user_details.json')
         json_data = json.load(f)
         values=("113",)
         #print(json_data)
@@ -173,49 +171,49 @@ def get_data():
             updated_since_date=since_date.strftime('%Y-%m-%dT%H:%M:%SZ')
             print("yesterday:",updated_since_date)
             update_order_dataset(0,updated_since_date,till_date)
-        f=open('config/get_order_list.json')
+        f=open('static/config/get_order_list.json')
         json_data = json.load(f)
         #print(json_data)
 
     elif(y['event']=="list_campaign"):
-        f=open('config/list_campaign.json')
+        f=open('static/config/list_campaign.json')
         json_data = json.load(f)
         #print(json_data)
 
     elif(y['event']=="get_campaign_details"):
         arg_var_status=True
-        f=open('config/get_campaign_details.json')
+        f=open('static/config/get_campaign_details.json')
         json_data = json.load(f)
         values=("113",)
         #print(json_data)
 
     elif(y['event']=="get_products_list"):
-        f=open('config/get_product_list.json')
+        f=open('static/config/get_product_list.json')
         json_data = json.load(f)
         #print(json_data)
 
     elif(y['event']=="get_product_details"):
         arg_var_status=True
-        f=open('config/get_product_details.json')
+        f=open('static/config/get_product_details.json')
         json_data = json.load(f)
         values=("113",)
         #print(json_data)
     
     elif(y['event']=="list_ads"):
         #arg_var_status=True
-        f=open('config/ads_list.json')
+        f=open('static/config/ads_list.json')
         json_data = json.load(f)
         #print(json_data)
     
     elif(y['event']=="get_settlements"):
         arg_var_status=True
-        f=open('config/get_settlements.json')
+        f=open('static/config/get_settlements.json')
         json_data = json.load(f)
         customer_id=myres[0][1]
         values=(customer_id,)
     
     elif(y['event']=="register_staff"):
-        f=open('config/register_staff.json')
+        f=open('static/config/register_staff.json')
         json_data = json.load(f)
         
 
@@ -284,7 +282,7 @@ def get_modal_data():
     
     if(y['event']=="get_user_details"):
         arg_var_status=True
-        f=open('config/get_user_details.json')
+        f=open('static/config/get_user_details.json')
         json_data = json.load(f)
         print("user id",y['user_id'])
         values=(y['user_id'],)
@@ -293,7 +291,7 @@ def get_modal_data():
     elif(y['event']=="get_campaign_details"):
         print("inside get_campaign_details")
         arg_var_status=True
-        f=open('config/get_campaign_details.json')
+        f=open('static/config/get_campaign_details.json')
         json_data = json.load(f)
         print("user id",y['user_id'])
         values=(y['user_id'],)
@@ -301,7 +299,7 @@ def get_modal_data():
 
     if(y['event']=="get_order_details"):
         arg_var_status=True
-        f=open('config/get_user_details.json')
+        f=open('static/config/get_user_details.json')
         json_data = json.load(f)
         print("user id",y['user_id'])
         values=(y['user_id'],)
@@ -309,7 +307,7 @@ def get_modal_data():
 
     elif(y['event']=="get_product_details"):
         arg_var_status=True
-        f=open('config/get_product_details.json')
+        f=open('static/config/get_product_details.json')
         json_data = json.load(f)
         print("user id",y['user_id'])
         values=(y['user_id'],)
@@ -318,7 +316,7 @@ def get_modal_data():
     elif(y['event']=="get_referral_details"):
         print("inside get_referral_details")
         arg_var_status=True
-        f=open('config/get_campaign_details.json')
+        f=open('static/config/get_campaign_details.json')
         json_data = json.load(f)
         val1=(y['sessionId'],)
         mycursor.execute(json_data['ref_query_str1'],val1)
@@ -333,7 +331,7 @@ def get_modal_data():
     elif(y['event']=="get_staff_details"):
         print("inside get_staff_details")
         arg_var_status=True
-        f=open('config/get_staff_details.json')
+        f=open('static/config/get_staff_details.json')
         json_data = json.load(f)
         print("user id",y['user_id'])
         values=(y['user_id'],)
@@ -431,7 +429,7 @@ def get_user_tabs():
     data = request.data 
     y = json.loads(data) 
     print(y['role'])    # the result is a Python dictionary:
-    f=open('config/user_tabs.json')
+    f=open('static/config/user_tabs.json')
     tab_data = json.load(f)
     if (y['role']=="Admin"):
         response=tab_data['Admin']

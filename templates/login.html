@@ -102,8 +102,11 @@ span.psw {
 
     function on_iframe(){
       let myIframe = document.getElementById("myIframe");
+      
       myIframe.style.width="1500px";
       myIframe.style.height="1000px";
+      /*myIframe.style.width="auto";
+      myIframe.style.height="auto";*/
       console.log("in iframe")
       let endpoint = server_ip+"home_page"
       let adsURL = endpoint;
@@ -158,7 +161,7 @@ span.psw {
         localStorage.setItem("u_role", u_role.toString());
         localStorage.setItem("user_name", u_username.toString());
         localStorage.setItem("session_id", data[1].toString());
-        if (data[0].redirect) {on_iframe();/* window.location.href = data[0].redirect;*/}
+        if (data[0].redirect) {document.getElementById('div_login').style.display="none"; on_iframe();/* window.location.href = data[0].redirect;*/}
         
       });
     }
