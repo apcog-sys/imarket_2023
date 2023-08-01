@@ -1,1 +1,1 @@
-var server_ip = "http://171.76.223.133:5000/";
+var server_ip = "http://127.0.0.1:5000/";
