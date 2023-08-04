@@ -24,25 +24,25 @@ wcapi = API(
 
 try:
 # Get the machine's IP address
-	#print("grtting ip")
-	#response = requests.get('https://api.ipify.org?format=json')
-	#data = response.json()
-	#public_ip = data['ip']
-    public_ip = "123"
+    print("getting ip")
+    response = requests.get('https://api.ipify.org?format=json')
+    data = response.json()
+    public_ip = data['ip']
+    #public_ip = "123"
     print("Public IP Address:", public_ip)
-	#  Write the IP address to a JavaScript file
-	#javascript_code = f'var server_ip = "http://{public_ip}:5000/";'
+#   Write the IP address to a JavaScript file
+    javascript_code = f'var server_ip = "http://{public_ip}:5000/";'
 
-	#with open("static/js/config.js", "w") as js_file:
-	    #js_file.write(javascript_code)
+    with open("static/js/config.js", "w") as js_file:
+        js_file.write(javascript_code)
 except ConnectionError:
-	print("connect error to find public ip address.")
+    print("connect error to find public ip address.")
 
 
 # global variables
 mydb = pymysql.connect(
-  host="localhost",
-  #host="db",
+  #host="localhost",
+  host="db",
   user="root",
   password="root",
   database="medicube"
